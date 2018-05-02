@@ -1,10 +1,8 @@
-var url = "http://localhost:8080/TestWeb/webresources/stundenplan";
-var req = new XMLHttpRequest();
+var url = "http://localhost:8080/Stundenplan/webresources/stundenplan";
+var req = new XMLHttpRequest;
 req.onload = onLoad;
 req.onerror = onError;
 req.open("GET", url, true);
-req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-req.setRequestHeader("Access-Control-Allow-Origin", "*");
 req.send();
 
 function onLoad() {

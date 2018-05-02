@@ -56,15 +56,13 @@ Connection conn = null;
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
-            String test2 = ex.getMessage();
-            System.out.println(test2);
         }
         JsonObject json = builder.build();
         return Response.ok()
-                .entity(json)
                 .header("Access-Control-Allow-Origin", "*")
                 .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
                 .header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, X-Codingpedia")
+                .entity(json)
                 .allow("OPTIONS").build();
     }
 }
