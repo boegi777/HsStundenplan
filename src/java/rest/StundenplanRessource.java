@@ -6,7 +6,6 @@
 package rest;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,24 +23,19 @@ import javax.ws.rs.core.Response;
 @Path("stundenplan")
 public class StundenplanRessource {
 
-Connection conn = null;
+Connection con = null;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response stundenplan() throws SQLException, ClassNotFoundException{
-        String test = "test";
-        String query = "SELECT * FROM Eintrag;";
-        String url = "jdbc:mysql://localhost:8889/stundenplan?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-        String user = "root";
-        String password = "root";
-        
-        Class.forName("com.mysql.jdbc.Driver");
         JsonObjectBuilder builder = Json.createObjectBuilder();
-        try (Connection con = DriverManager.getConnection(url, user, password);
-                PreparedStatement pst = con.prepareStatement(query);
-                ResultSet rs = pst.executeQuery()) {
-      
-            
+        try {
+            String query = "SELECT * FROM Eintrag;";
+            DatabaseManager dm = new DatabaseManager();
+            con = dm.setConnection();
+            PreparedStatement pst = con.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+
             while (rs.next()) {
                 builder.add(rs.getString(1), Json.createObjectBuilder()
                     .add("time", rs.getString(2))
@@ -59,10 +53,8 @@ Connection conn = null;
         }
         JsonObject json = builder.build();
         return Response.ok()
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Methods", "GET, POST, DELETE, PUT")
-                .header("Access-Control-Allow-Headers", "X-Requested-With, Content-Type, X-Codingpedia")
+                .allow("OPTIONS")
                 .entity(json)
-                .allow("OPTIONS").build();
+                .build();
     }
 }

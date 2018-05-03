@@ -12,7 +12,7 @@ import javax.ws.rs.core.Application;
  *
  * @author paul
  */
-@javax.ws.rs.ApplicationPath("webresources")
+@javax.ws.rs.ApplicationPath("api")
 public class ApplicationConfig extends Application {
 
     @Override
@@ -29,6 +29,9 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(rest.Authentication.class);
+        resources.add(rest.ResponseHeaderFilter.class);
+        resources.add(rest.SecurityFilter.class);
         resources.add(rest.StundenplanRessource.class);
     }
     
