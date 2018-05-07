@@ -22,7 +22,8 @@ import javax.ws.rs.core.MediaType;
 @Path("stundenplan")
 public class StundenplanRessource {
 
-Connection con = null;
+    public static TimetableListener timetableListener = null;
+    Connection con = null;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -37,6 +38,12 @@ Connection con = null;
         JsonObject json = buildStundenplanJson();
         return json.toString();
     }
+    
+    public interface TimetableListener{
+        void onTimetableChanged();
+    }
+    
+    public static void setTimetableListener(TimetableListener listener){ timetableListener = listener; }
     
     private JsonObject buildStundenplanJson(){
         JsonObject timetableJSON = new JsonObject();
@@ -70,7 +77,7 @@ Connection con = null;
         JsonParser jsonParser = new JsonParser();
         PreparedStatement pst = null;
         com.google.gson.JsonObject timetableJSON = jsonParser.parse(timetable).getAsJsonObject();
-        int index = 6;
+        int index = 0;
         try {
             DatabaseManager dm = new DatabaseManager();
             con = dm.setConnection();
@@ -81,6 +88,9 @@ Connection con = null;
                 pst = con.prepareStatement(dm.getEntryInsertQuery(entryJSON, index));
                 int code = pst.executeUpdate();
                 index++;
+            }
+            if(timetableListener != null){
+                timetableListener.onTimetableChanged();
             }
         } catch (SQLException ex) {
                     System.out.println("SQLException: " + ex.getMessage());

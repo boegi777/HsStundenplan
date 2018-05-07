@@ -1,4 +1,6 @@
-var serviceURL = "http://localhost:8080/hs-stundenplan/api";
+var serviceURL = "http://localhost:8080/hs-stundenplan/api"; //hs-stundenplan = Projektname (Gegebenenfalls ändern)
+var wsURL = "ws://localhost:8080/hs-stundenplan/socket"; //hs-stundenplan = Projektname (Gegebenenfalls ändern)
+var stundenplan = null;
 
 function checkAuthentication(){
     var token = window.localStorage.getItem("AuthToken");
@@ -14,6 +16,39 @@ function loadData(){
     req.send();
 }
 
+function deleteTextContent(){
+    document.getElementById("admin-textcontent").value = "";
+}
+
+function updateTimetable(){
+    var timeSelector = document.getElementById("timer").children[1];
+    var daySelector = document.getElementById("dayer").children[1];
+    var entry = null;
+    var text = "";
+
+    if(stundenplan){
+        entry = stundenplan[timeSelector.value]; 
+        entry[daySelector.value] = document.getElementById("admin-textcontent").value;
+        sendTimetablePostRequest();
+    }
+}
+
+function sendTimetablePostRequest(){
+    var url = serviceURL + "/stundenplan";
+    var req = new XMLHttpRequest;
+    var token = window.localStorage.getItem("AuthToken");
+    req.onload = onUpdateTable;
+    req.onerror = onError;
+    req.open("POST", url, true);
+    req.setRequestHeader("Authorization", "Basic " + token);
+    req.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    req.send("timetable=" + JSON.stringify(stundenplan));
+}
+
+function onUpdateTable(){
+    console.log("timetable updated");
+}
+
 function login(){
     var username = document.getElementById("username-field").value;
     var password = document.getElementById("password-field").value;
@@ -21,7 +56,7 @@ function login(){
     authenticate(token);
     document.addEventListener("AuthSuccess", function(){
         hideLogin();
-        showEditForm();
+        showAdminPanel();
     });
     document.addEventListener("AuthFailed", function(){
         alert("Benutzername oder Passwort falsch!");
@@ -29,6 +64,12 @@ function login(){
     document.addEventListener("AuthError", function(){
         alert("Bei der Anmeldung ist ein Fehler aufgetreten!");
     })
+}
+
+function adminLogout(){
+    window.localStorage.clear();
+    showLogin();
+    hideAdminPanel();
 }
 
 function authenticate(token){
@@ -59,9 +100,8 @@ function onLogin(){
 }
 
 function onLoadTable() {
-    console.log(this);
     if(this.status == 200){
-        var stundenplan = JSON.parse(this.responseText);
+        stundenplan = JSON.parse(this.responseText);
         var table = "<table class='table table-hover'>";
         table += "<thead>";
         table += "<tr>";
@@ -75,7 +115,6 @@ function onLoadTable() {
         table += "</thead>";
         table += "<tbody>";
         for (i in stundenplan){
-            console.log(stundenplan[i]);
             var row = "<tr>";
             row += "<td>" + stundenplan[i].time + "</td>";
             row += "<td>" + stundenplan[i].dayOne + "</td>";
@@ -90,16 +129,59 @@ function onLoadTable() {
         table += "</table>";
 
         document.getElementById("content").innerHTML = table;
+        setAdminPanelContent();
     } 
+}
+
+function setAdminPanelContent(){
+    var timeSelector = document.getElementById("timer").children[1];
+    var daySelector = document.getElementById("dayer").children[1];
+    var entry = null;
+    var text = "";
+
+    if(stundenplan){
+        entry = stundenplan[timeSelector.value]; 
+        text = entry[daySelector.value];
+        document.getElementById("admin-textcontent").value = text;
+    }
 }
 
 function hideLogin(){
     document.getElementById("login").style.display = "none";
-    console.log("hide-login");
 }
 
-function showEditForm(){
+function hideLogin(){
+    document.getElementById("login").style.display = "block";
+}
 
+function showAdminPanel(){
+    var toppart = document.getElementById("toppart");
+    var adminpanel = document.getElementById("adminpanel");
+    var logout = document.getElementById("logout");
+    logout.style.display = "none";
+    adminpanel.style.display = "none";
+    if (toppart.style.display === "none") {
+        toppart.style.display = "block";
+    } else {
+        toppart.style.display = "none";
+        adminpanel.style.display = "block";
+        logout.style.display = "block";
+    }
+
+    setPanelEvents();
+}
+
+function setPanelEvents(){
+    var timeSelector = document.getElementById("timer").children[1];
+    var daySelector = document.getElementById("dayer").children[1];
+
+    timeSelector.onchange = setAdminPanelContent;
+    daySelector.onchange = setAdminPanelContent;
+}
+
+function hideAdminPanel(){
+    document.getElementById("logout").style.display = 'none';
+    document.getElementById("adminpanel").style.display = 'none';
 }
 
 function b64EncodeUnicode(str) {
@@ -114,14 +196,46 @@ function onError(e) {
     console.error(e);
 }
 
+function onSocketOpen(evt){
+    websocket.send("connected");
+}
+
+function onSocketClose(evt){
+    websocket.send("disconnected");
+}
+
+function onSocketMessage(evt){
+    console.log(evt.data);
+    if(evt.data == "200"){
+        loadData();
+    }
+}
+
+function onSocketError(evt){
+    websocket.send("error occured");
+}
+
+function initWebsocket(){
+    websocket = new WebSocket(wsURL);
+    websocket.onopen = function(evt) { onSocketOpen(evt) }
+    websocket.onoclose = function(evt) { onSocketClose(evt) }
+    websocket.onmessage = function(evt) { onSocketMessage(evt) }
+    websocket.onerror = function(evt) { onSocketError(evt) }
+}
+
+window.onload = function() {
+    hideAdminPanel();
+};
+
 document.onreadystatechange = function(){
     if(document.readyState){
         checkAuthentication();
         document.addEventListener("AuthSuccess", function(elm){
             hideLogin();
-            showEditForm();
+            showAdminPanel();
         });
         loadData();
+        initWebsocket();
     }
 }
 

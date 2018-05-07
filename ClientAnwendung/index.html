@@ -14,7 +14,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
     <script type="text/javascript" src="js/api.js"></script>
-    <title>Stundenplan</title>
+
+<title>Stundenplan</title>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -32,10 +33,28 @@
             <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="z.B. '4 Semester BWL..'" aria-label="Search">
                 <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Suchen</button>
+                <button id="logout" onclick="adminLogout()" class="btn btn-outline-light my-2 my-sm-0" type="lo">Logout</button>
             </form>
         </div>
     </nav>
-    <div class="toppart">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="toppart" id="toppart">
         <div class="introduction">
             <h1>Willkommen!</h1>
             <p>Wähle deinen Studiengang und das passende Semester aus, um deinen Live-Stundenplan zu erhalten. Bei Verbesserungswünschen kontaktiere uns über das Kontaktformular in der Navigation.
@@ -62,45 +81,61 @@
                     <button onclick="login()" type="submit" class="btn btn-primary">Login</button>
                 </form>
             </div>
-            <div class="adminpanel">
-                <form>
-                    <div class="selectors">
-                        <div class="form-group" id="timer">
-                            <label for="exampleFormControlSelect1">Uhrzeit:</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
-                                <option>8:15 - 9:45</option>
-                                <option>10:15 - 11:45</option>
-                                <option>12:30 - 14:00</option>
-                                <option>14:15 - 15:45</option>
-                                <option>16:00 - 17:30</option>
-                            </select>
-                        </div>
-                        <div class="form-group" id="dayer">
-                            <label for="exampleFormControlSelect1">Tag:</label>
-                            <select class="form-control" id="exampleFormControlSelect1">
-                                <option>Montag</option>
-                                <option>Dienstag</option>
-                                <option>Mittwoch</option>
-                                <option>Donnerstag</option>
-                                <option>Freitag</option>
-                            </select>
-                        </div>
-                    </div>
-        
-                    <div class="actionButtons">
-                        <button id="delete" type="button" class="btn btn-primary">Löschen</button>
-                        <button id="save" type="button" class="btn btn-primary">Speichern</button>
-                    </div>
-        
-        
-                    <div id="textbox" class="form-group">
-                        <label for="exampleFormControlTextarea1">Neuer Eintrag:</label>
-                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                    </div>
-                </form>
-        
-            </div>
         </div>
+
+
+        <div class="adminpanel" id="adminpanel">
+            <form>
+                <div class="selectors">
+                    <div class="form-group" id="timer">
+                        <label for="exampleFormControlSelect1">Uhrzeit:</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option value="0">8:15 - 9:45</option>
+                            <option value="1">10:15 - 11:45</option>
+                            <option value="2">12:30 - 14:00</option>
+                            <option value="3">14:15 - 15:45</option>
+                            <option value="4">16:00 - 17:30</option>
+                            <option value="5">17:30 - 19:00</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="dayer">
+                        <label for="exampleFormControlSelect1">Tag:</label>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                            <option value="dayOne">Montag</option>
+                            <option value="dayTwo">Dienstag</option>
+                            <option value="dayThree">Mittwoch</option>
+                            <option value="dayFour">Donnerstag</option>
+                            <option value="dayFive">Freitag</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="actionButtons">
+                    <button id="delete" onclick="deleteTextContent()" type="button" class="btn btn-primary">Löschen</button>
+                    <button id="save" onclick="updateTimetable()" type="button" class="btn btn-primary">Speichern</button>
+                </div>
+
+
+                <div id="textbox" class="form-group">
+                    <label for="exampleFormControlTextarea1">Neuer Eintrag:</label>
+                    <textarea class="form-control" id="admin-textcontent" rows="3"></textarea>
+                </div>
+            </form>
+
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
         <div class="selections">
             <div class="dropdown dropdownaligned">
                 <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -129,7 +164,6 @@
         <br>
         <br>
         <br>
-
 
         <div id="content"></div>
         <div class="wrapper">
