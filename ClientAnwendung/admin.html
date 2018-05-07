@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="de">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="js/api.js"></script>
+    <title>Stundenplan</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="#">Hochschule Hannover Live Stundenplan</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="index.html">Alle Stundenpläne <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="z.B. '4 Semester BWL..'" aria-label="Search">
+                <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Suchen</button>
+            </form>
+        </div>
+    </nav>
+
+
+    <div class="adminpanel">
+        <form>
+            <div class="selectors">
+                <div class="form-group" id="timer">
+                    <label for="exampleFormControlSelect1">Uhrzeit:</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option>8:15 - 9:45</option>
+                        <option>10:15 - 11:45</option>
+                        <option>12:30 - 14:00</option>
+                        <option>14:15 - 15:45</option>
+                        <option>16:00 - 17:30</option>
+                    </select>
+                </div>
+                <div class="form-group" id="dayer">
+                    <label for="exampleFormControlSelect1">Tag:</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option>Montag</option>
+                        <option>Dienstag</option>
+                        <option>Mittwoch</option>
+                        <option>Donnerstag</option>
+                        <option>Freitag</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="actionButtons">
+                <button id="delete" type="button" class="btn btn-primary">Löschen</button>
+                <button id="save" type="button" class="btn btn-primary">Speichern</button>
+            </div>
+
+
+            <div id="textbox" class="form-group">
+                <label for="exampleFormControlTextarea1">Neuer Eintrag:</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+        </form>
+
+    </div>
+
+
+
+    <div class="selections">
+        <div class="dropdown dropdownaligned">
+            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Studiengang
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">Mediendesigninformatik</a>
+                <a class="dropdown-item" href="#">Angewandte Informatik</a>
+                <a class="dropdown-item" href="#">Elektrotechnik</a>
+            </div>
+
+        </div>
+        <div class="dropdown dropdownaligned">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Semester
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">2</a>
+                <a class="dropdown-item" href="#">4</a>
+                <a class="dropdown-item" href="#">6</a>
+            </div>
+
+        </div>
+    </div>
+
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td colspan="2">Larry the Bird</td>
+                <td>@twitter</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">First</th>
+                <th scope="col">Last</th>
+                <th scope="col">Handle</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+            <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+            </tr>
+            <tr>
+                <th scope="row">3</th>
+                <td colspan="2">Larry the Bird</td>
+                <td>@twitter</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br>
+    <br>
+    <br>
+
+
+    <div id="content"></div>
+    <div class="wrapper">
+
+        <div class="push"><!--//--></div>
+    </div> <!-- .wrapper -->
+
+    <footer class="footer ">
+        <div class="container">
+            <span class="text-muted">Hochschule Hannover Live Stundenplan</span>
+            <ul class="text-muted rights">
+                <li><a href="impressum.html">Kontakt & Impressum</a></li>
+                <li>|</li>
+                <li>Copyright &copy; 2018</li>
+            </ul>
+        </div>
+    </footer>
+
+
+
+</body>
+</html>

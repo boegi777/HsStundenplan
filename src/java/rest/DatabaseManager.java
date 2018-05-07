@@ -49,4 +49,18 @@ public class DatabaseManager {
         query += "passwort = '" + password + "';";
         return query;
     }
+    
+    public String getEntryInsertQuery(com.google.gson.JsonObject entry, int index){
+        String query = "";
+        query += "INSERT INTO eintrag ";
+        query += "VALUES (";
+        query += index + ", ";
+        query += entry.get("time").toString() + ", ";
+        query += entry.get("dayOne").toString() + ", ";
+        query += entry.get("dayTwo").toString() + ", ";
+        query += entry.get("dayThree").toString() + ", ";
+        query += entry.get("dayFour").toString() + ", ";
+        query += entry.get("dayFive").toString() + "); ";
+        return query;
+    }
 }

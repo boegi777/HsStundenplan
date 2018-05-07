@@ -87,3 +87,37 @@ body {
     font-weight: 300;
     line-height: 1.2;
 }
+
+.adminpanel {
+    width: 70%;
+    padding: 20px 0px 0px 0px;
+
+}
+
+.selectors {
+    float: left;
+}
+
+#timer {
+    float: left;
+    margin: 0px 0px 0px 5px;
+}
+
+#dayer {
+    float: left;
+    margin: 0px 0px 0px 5px;
+}
+
+.actionButtons {
+    padding: 32px;
+}
+
+#save {
+    float: left;
+    margin: 0px 0px 0px 5px;
+}
+
+#delete {
+    float: left;
+    margin: 0px 0px 0px 5px;
+}

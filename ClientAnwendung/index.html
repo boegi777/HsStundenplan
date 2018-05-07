@@ -62,6 +62,44 @@
                     <button onclick="login()" type="submit" class="btn btn-primary">Login</button>
                 </form>
             </div>
+            <div class="adminpanel">
+                <form>
+                    <div class="selectors">
+                        <div class="form-group" id="timer">
+                            <label for="exampleFormControlSelect1">Uhrzeit:</label>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                <option>8:15 - 9:45</option>
+                                <option>10:15 - 11:45</option>
+                                <option>12:30 - 14:00</option>
+                                <option>14:15 - 15:45</option>
+                                <option>16:00 - 17:30</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="dayer">
+                            <label for="exampleFormControlSelect1">Tag:</label>
+                            <select class="form-control" id="exampleFormControlSelect1">
+                                <option>Montag</option>
+                                <option>Dienstag</option>
+                                <option>Mittwoch</option>
+                                <option>Donnerstag</option>
+                                <option>Freitag</option>
+                            </select>
+                        </div>
+                    </div>
+        
+                    <div class="actionButtons">
+                        <button id="delete" type="button" class="btn btn-primary">Löschen</button>
+                        <button id="save" type="button" class="btn btn-primary">Speichern</button>
+                    </div>
+        
+        
+                    <div id="textbox" class="form-group">
+                        <label for="exampleFormControlTextarea1">Neuer Eintrag:</label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                </form>
+        
+            </div>
         </div>
         <div class="selections">
             <div class="dropdown dropdownaligned">

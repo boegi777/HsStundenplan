@@ -64,16 +64,14 @@ public class SecurityFilter implements ContainerRequestFilter {
                 } catch (QueryException ex) {
                     sendUnauthorizedRequest(requestContext);
                 }
-                
-                sendUnauthorizedRequest(requestContext);
             }
+            sendUnauthorizedRequest(requestContext);
         }
     }
 
     private void sendUnauthorizedRequest(ContainerRequestContext requestContext) {
         Response unauthorizedStatus = Response
                 .status(Response.Status.UNAUTHORIZED)
-                .entity("Unauthorized Request")
                 .build();
 
         requestContext.abortWith(unauthorizedStatus);
