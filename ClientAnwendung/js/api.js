@@ -8,7 +8,7 @@ function checkAuthentication(){
 }
 
 function loadData(){
-    var url = serviceURL + "/stundenplan";
+    var url = serviceURL + "/timetable";
     var req = new XMLHttpRequest;
     req.onload = onLoadTable;
     req.onerror = onError;
@@ -34,7 +34,7 @@ function updateTimetable(){
 }
 
 function sendTimetablePostRequest(){
-    var url = serviceURL + "/stundenplan";
+    var url = serviceURL + "/timetable";
     var req = new XMLHttpRequest;
     var token = window.localStorage.getItem("AuthToken");
     req.onload = onUpdateTable;
